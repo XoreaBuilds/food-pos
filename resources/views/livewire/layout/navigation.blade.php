@@ -38,29 +38,46 @@ new class extends Component {
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @can('manage menu')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Admin Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')" wire:navigate>
+                            {{ __('Menu') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view reports')
+                        <x-nav-link :href="route('reports')" :active="request()->routeIs('reports')" wire:navigate>
+                            {{ __('Reports') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('manage users')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
+                            {{ __('Staff') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('access pos')
+                        <x-nav-link :href="route('pos')" :active="request()->routeIs('pos')" wire:navigate>
+                            {{ __('Register') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('process payments')
+                        <x-nav-link :href="route('payment')" :active="request()->routeIs('payment')" wire:navigate>
+                            {{ __('Payments') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view order status')
+                        <x-nav-link :href="route('orders.status')" :active="request()->routeIs('orders.status')" wire:navigate>
+                            {{ __('Orders') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('view kitchen display')
+                        <x-nav-link :href="route('kitchen.display')" :active="request()->routeIs('kitchen.display')" wire:navigate>
+                            {{ __('Kitchen Display') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
-
-            @can('manage menu')
-                <x-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')">
-                    {{ __('Menu Management') }}
-                </x-nav-link>
-            @endcan
-
-            @can('view reports')
-                <x-nav-link :href="route('reports')" :active="request()->routeIs('reports')">
-                    {{ __('Reports') }}
-                </x-nav-link>
-            @endcan
-
-            @can('manage users')
-                <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                    {{ __('Users') }}
-                </x-nav-link>
-            @endcan
 
 
             <!-- Settings Dropdown -->
@@ -71,6 +88,7 @@ new class extends Component {
                             class="inline-flex items-center rounded-lg border border-[#e8e2d4] bg-[#fffdf8] px-3 py-2 text-sm font-medium leading-4 text-[#536354] transition hover:text-[#294d38] focus:outline-none">
                             <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
                                 x-on:profile-updated.window="name = $event.detail.name"></div>
+                            <span class="ms-2 rounded-full bg-[#eef5ec] px-2 py-1 text-xs font-semibold capitalize text-[#47734e]">{{ auth()->user()->getRoleNames()->first() ?? 'staff' }}</span>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -117,9 +135,44 @@ new class extends Component {
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @can('manage menu')
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Admin Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')" wire:navigate>
+                    {{ __('Menu Management') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('view reports')
+                <x-responsive-nav-link :href="route('reports')" :active="request()->routeIs('reports')" wire:navigate>
+                    {{ __('Reports') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('manage users')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
+                    {{ __('Staff Management') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('access pos')
+                <x-responsive-nav-link :href="route('pos')" :active="request()->routeIs('pos')" wire:navigate>
+                    {{ __('POS Register') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('process payments')
+                <x-responsive-nav-link :href="route('payment')" :active="request()->routeIs('payment')" wire:navigate>
+                    {{ __('Payments') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('view order status')
+                <x-responsive-nav-link :href="route('orders.status')" :active="request()->routeIs('orders.status')" wire:navigate>
+                    {{ __('Orders') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('view kitchen display')
+                <x-responsive-nav-link :href="route('kitchen.display')" :active="request()->routeIs('kitchen.display')" wire:navigate>
+                    {{ __('Kitchen Display') }}
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
@@ -129,6 +182,7 @@ new class extends Component {
                     x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
                     x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+                <div class="mt-1 text-xs font-semibold capitalize text-emerald-700">{{ auth()->user()->getRoleNames()->first() ?? 'staff' }} account</div>
             </div>
 
             <div class="mt-3 space-y-1">

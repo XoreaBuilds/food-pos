@@ -23,7 +23,7 @@
             <div class="w-full max-w-md rounded-3xl border border-[#DCD6C5] p-8 shadow-[6px_6px_0px_0px_#E3DDCB] md:p-10">
                 <p class="text-xs font-bold uppercase tracking-widest text-[#C85A32]">Welcome Back</p>
                 <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-[#1A381E]">Come on in.</h2>
-                <p class="mt-2 text-sm text-[#6B7A6B]">Use your details to continue to your account.</p>
+                <p class="mt-2 text-sm text-[#6B7A6B]">Use your staff account to continue. Your assigned role opens the right workspace for you.</p>
 
                 @if (session('status'))
                     <p class="mt-5 rounded-lg bg-green-50 p-3 text-sm text-green-700">{{ session('status') }}</p>

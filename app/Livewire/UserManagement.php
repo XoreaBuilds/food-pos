@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
+use Illuminate\Validation\Rule;
 
 #[Layout('layouts.app')]
 class UserManagement extends Component
@@ -19,7 +20,7 @@ class UserManagement extends Component
     {
         return view('livewire.user-management', [
             'users' => User::with('roles')->get(),
-            'roles' => Role::all(),
+            'roles' => Role::whereIn('name', ['admin', 'cashier', 'kitchen'])->orderBy('name')->get(),
         ]);
     }
 
@@ -29,7 +30,7 @@ class UserManagement extends Component
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'selectedRole' => 'required|exists:roles,name',
+            'selectedRole' => ['required', Rule::in(['admin', 'cashier', 'kitchen'])],
         ]);
 
         $user = User::create([
