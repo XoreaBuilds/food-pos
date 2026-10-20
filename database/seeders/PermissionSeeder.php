@@ -21,12 +21,26 @@ class PermissionSeeder extends Seeder
             'manage users',     // Users: create/edit/assign roles
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+        // --- POS ORDER PERMISSIONS ---
+        $cashierPermissions = [
+            'access pos', // POS register 
+            'process payment', // Payment Processing
+            'view order status', // Order Status
+        ];
+
+        foreach (array_merge($permissions, $cashierPermissions) as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
         }
 
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $adminRole->givePermissionTo($permissions);
+        $adminRole->givePermissionTo(array_merge($permissions, $cashierPermissions));
+
+        $cashierRole = Role::firstOrCreate(['name' => 'cashier']);
+        $cashierRole->givePermissionTo($cashierPermissions);
+
 
     }
 }
